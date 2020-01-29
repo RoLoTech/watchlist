@@ -11,20 +11,25 @@ import android.widget.ListView;
 
 import com.example.rolotech.watchlist.data.TitleStorage;
 import com.example.rolotech.watchlist.models.Title;
+import com.example.rolotech.watchlist.persistence.AppDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Landing extends AppCompatActivity {
+import androidx.room.Room;
+
+public class MainActivity extends AppCompatActivity {
 
     private ListView lv;
     private List<String> your_array_list = new ArrayList<>();
     private ArrayAdapter<String> arrayAdapter;
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landing);
+        db = AppDatabase.getAppDatabase(getApplicationContext());
+        setContentView(R.layout.activity_main);
         final Button button = findViewById(R.id.add_title);
         lv = findViewById(R.id.listView);
 
@@ -59,8 +64,8 @@ public class Landing extends AppCompatActivity {
 //        arrayAdapter.notifyDataSetChanged();
         arrayAdapter.clear();
         for (Title title : TitleStorage.titlesStored) {
-              arrayAdapter.add(title.getName());
-          }
+            arrayAdapter.add(title.getName());
+        }
 
         Log.e("arrayCount", your_array_list.size() + "");
         Log.e("titlesCount", TitleStorage.titlesStored.size() + "");

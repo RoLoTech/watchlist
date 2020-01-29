@@ -13,6 +13,7 @@ import android.widget.Spinner;
 
 import com.example.rolotech.watchlist.data.TitleStorage;
 import com.example.rolotech.watchlist.models.Title;
+import com.example.rolotech.watchlist.persistence.AppDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +28,12 @@ public class AddTitleActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = AppDatabase.getAppDatabase(this);
         setContentView(R.layout.activity_add_title);
         final EditText titleName = findViewById(R.id.title_name);
         final EditText titleYear = findViewById(R.id.title_year);
@@ -40,8 +43,10 @@ public class AddTitleActivity extends AppCompatActivity {
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                TitleStorage.titlesStored.add(new Title(titleName.getText().toString(), titleYear.getText().toString(), titleType.getSelectedItem().toString()));
+                db.titleDao().insertAll(new Title(titleName.getText().toString(), titleYear.getText().toString(), titleType.getSelectedItem().toString()));
+                //TitleStorage.titlesStored.add(new Title(titleName.getText().toString(), titleYear.getText().toString(), titleType.getSelectedItem().toString()));
                 finish();
+
             }
         });
 
